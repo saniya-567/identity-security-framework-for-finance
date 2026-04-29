@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Security Alerts</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --emerald: #00d084;
+            --midnight: #040404;
+            --glass: rgba(25,25,25,0.6);
+            --border: rgba(255,255,255,0.08);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            margin: 0;
+            padding: 30px;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(0,208,132,0.08), transparent 40%),
+                var(--midnight);
+            color: #fff;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        /* TABLE WRAPPER */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--glass);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+        }
+
+        th {
+            background: rgba(0,208,132,0.15);
+            color: var(--emerald);
+            font-weight: 600;
+        }
+
+        th, td {
+            padding: 14px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr {
+            transition: 0.3s;
+        }
+
+        tr:hover {
+            background: rgba(0,208,132,0.05);
+            transform: scale(1.01);
+        }
+
+        /* STATUS BADGES */
+        .status {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .locked {
+            background: rgba(255,0,0,0.15);
+            color: red;
+        }
+
+        .suspicious {
+            background: rgba(255,165,0,0.15);
+            color: orange;
+        }
+
+        /* BUTTONS */
+        .btn {
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+            margin: 2px;
+            transition: 0.3s;
+        }
+
+        .block {
+            background: rgba(255,0,0,0.15);
+            color: red;
+        }
+
+        .block:hover {
+            background: red;
+            color: white;
+            box-shadow: 0 0 10px rgba(255,0,0,0.5);
+        }
+
+        .unblock {
+            background: rgba(0,208,132,0.15);
+            color: var(--emerald);
+        }
+
+        .unblock:hover {
+            background: var(--emerald);
+            color: black;
+            box-shadow: 0 0 10px rgba(0,208,132,0.5);
+        }
+
+        /* ATTEMPTS */
+        .attempts {
+            font-weight: 600;
+        }
+
+        .high {
+            color: red;
+        }
+
+        .medium {
+            color: orange;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
+            th, td {
+                padding: 10px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<h2> Security Alerts</h2>
+
+<div class="table-container">
+<table>
+
+<tr>
+    <th>Username</th>
+    <th>Email</th>
+    <th>Attempts</th>
+    <th>Status</th>
+    <th>Action</th>
+</tr>
+
+{% for user in users %}
+<tr>
+    <td>{{ user.username }}</td>
+    <td>{{ user.email }}</td>
+
+    <td class="attempts 
+        {% if user.failed_attempts >= 5 %}high
+        {% elif user.failed_attempts >= 3 %}medium
+        {% endif %}
+    ">
+        {{ user.failed_attempts }}
+    </td>
+
+    <td>
+        {% if user.is_locked %}
+            <span class="status locked">🔒 Locked</span>
+        {% else %}
+            <span class="status suspicious">⚠ Suspicious</span>
+        {% endif %}
+    </td>
+
+    <td>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="user_id" value="{{ user.id }}">
+
+            <button name="action" value="block" class="btn block">
+                Block
+            </button>
+
+            <button name="action" value="unblock" class="btn unblock">
+                Unblock
+            </button>
+        </form>
+    </td>
+</tr>
+{% endfor %}
+
+</table>
+</div>
+
+</body>
+</html>

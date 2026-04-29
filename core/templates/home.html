@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nexus Capital | Obsidian Glass UI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <style>
+        :root {
+            --emerald: #00d084;
+            --midnight: #060606;
+            --glass-card: rgba(25, 25, 25, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--midnight);
+            color: #ffffff;
+            cursor: pointer;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* BACKGROUND AMBIENT EFFECT */
+        .ambient-glow {
+            position: fixed;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, rgba(0, 208, 132, 0.05) 0%, transparent 70%);
+            top: -15%;
+            left: -10%;
+            z-index: -1;
+            filter: blur(100px);
+        }
+
+        /* FLOATING PILL NAVIGATION */
+        .navbar {
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .glass-nav {
+            background: rgba(20, 20, 20, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 100px;
+            padding: 10px 30px;
+        }
+
+        .nav-link {
+            color: #888 !important;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--emerald) !important;
+        }
+
+        /* HERO SECTION */
+        .hero-section {
+            padding-top: 160px;
+            padding-bottom: 80px;
+        }
+
+        .hero-title {
+            font-weight: 800;
+            font-size: clamp(2.5rem, 8vw, 4.8rem);
+            line-height: 1;
+            letter-spacing: -3px;
+            margin-bottom: 25px;
+        }
+
+        /* CURVED GLASS CARDS */
+        .curved-glass-card {
+            background: var(--glass-card);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 40px; /* High curvature */
+            padding: 50px 40px;
+            height: 100%;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .curved-glass-card:hover {
+            transform: translateY(-15px);
+            background: rgba(40, 40, 40, 0.8);
+            border-color: var(--emerald);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .icon-box {
+            width: 60px;
+            height: 60px;
+            background: rgba(0, 208, 132, 0.1);
+            color: var(--emerald);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            margin-bottom: 30px;
+        }
+
+        /* BUTTONS */
+        .btn-emerald {
+            background: var(--emerald);
+            color: #000;
+            font-weight: 700;
+            border-radius: 100px;
+            padding: 12px 35px;
+            border: none;
+            transition: 0.3s;
+        }
+
+        .btn-emerald:hover {
+            box-shadow: 0 0 20px rgba(0, 208, 132, 0.4);
+            transform: scale(1.05);
+        }
+
+        /* MOBILE OPTIMIZATION */
+        @media (max-width: 991px) {
+            .glass-nav {
+                border-radius: 30px;
+                padding: 15px 20px;
+            }
+            .navbar-collapse {
+                margin-top: 15px;
+                text-align: center;
+            }
+        }
+
+        /* FOOTER HINT */
+        .tap-hint {
+            position: fixed;
+            bottom: 30px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.7rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: #444;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body onclick="goToHome()">
+
+    <div class="ambient-glow"></div>
+
+    <nav class="navbar navbar-expand-lg fixed-top px-lg-5">
+        <div class="container-fluid glass-nav">
+            <a class="navbar-brand fw-bold text-white" href="#">
+                NEXUS<span style="color: var(--emerald);">.</span>
+            </a>
+
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#nexusNav">
+                <i class="bi bi-list text-white fs-2"></i>
+            </button>
+
+            <div class="collapse navbar-collapse" id="nexusNav">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">loan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Security</a></li>
+                </ul>
+                <button class="btn btn-emerald d-none d-lg-block">Sign In</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container hero-section">
+        <div class="row align-items-center">
+            <div class="col-lg-10">
+                <p class="text-uppercase small fw-bold mb-3" style="letter-spacing: 3px; color: #888;">Finance Security System</p>
+                <h3 class="hero-title">Where Finance Meets Security<br><span style="color: var(--emerald);">NEXUS-Secure Finance</span></h3>
+            </div>
+        </div>
+
+        <div class="row g-4 mt-4">
+            <div class="col-12 col-md-4">
+                <div class="curved-glass-card">
+                    <div class="icon-box"><i class="bi bi-safe"></i></div>
+                    <h4 class="fw-bold mb-3">GOLD RATE</h4>
+                    <p class="text-secondary small">Today's Gold Rate.</p>
+                    <i class="bi bi-arrow-right-short fs-2 position-absolute bottom-0 end-0 m-4" style="color: var(--emerald);"></i>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="curved-glass-card">
+                    <div class="icon-box"><i class="bi bi-lightning-charge"></i></div>
+                    <h4 class="fw-bold mb-3">Instant Loans</h4>
+                    <p class="text-secondary small">Get fast and secure loans with minimal documentation and instant approval..</p>
+                    <i class="bi bi-arrow-right-short fs-2 position-absolute bottom-0 end-0 m-4" style="color: var(--emerald);"></i>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="curved-glass-card">
+                    <div class="icon-box"><i class="bi bi-shield-check"></i></div>
+                    <h4 class="fw-bold mb-3">Secure Banking System</h4>
+                    <p class="text-secondary small">A reliable and secure platform that protects user data, prevents unauthorized access, and ensures safe financial transactions..</p>
+                    <i class="bi bi-arrow-right-short fs-2 position-absolute bottom-0 end-0 m-4" style="color: var(--emerald);"></i>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="tap-hint">Tap screen to proceed</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function goToHome() {
+            // This captures all background and card clicks
+            // and redirects to your home/login page
+            window.location.href = "{% url 'login' %}";
+        }
+
+        // UX Tweak: Prevents the navigation toggle from triggering the redirect 
+        // until the menu is actually used.
+        document.querySelector('.navbar-toggler').onclick = function(e) {
+            e.stopPropagation();
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Loan Officer Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --emerald: #00d084;
+    --midnight: #040404;
+    --glass: rgba(25,25,25,0.6);
+    --border: rgba(255,255,255,0.08);
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    margin: 0;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(0,208,132,0.08), transparent 40%),
+        var(--midnight);
+    color: #fff;
+}
+
+/* NAVBAR */
+.navbar {
+    margin: 20px;
+    background: var(--glass);
+    backdrop-filter: blur(25px);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.navbar a {
+    color: #aaa;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 100px;
+    margin-left: 10px;
+    transition: 0.3s;
+    font-size: 14px;
+}
+
+/* PRIMARY BUTTON */
+.navbar .add {
+    background: var(--emerald);
+    color: black;
+    font-weight: 600;
+}
+
+.navbar .add:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0,208,132,0.5);
+}
+
+/* LOGOUT */
+.navbar .logout {
+    background: rgba(255,0,0,0.2);
+    color: #ff4d4d;
+}
+
+.navbar .logout:hover {
+    background: red;
+    color: white;
+}
+
+/* DEFAULT HOVER */
+.navbar a:hover {
+    background: rgba(0,208,132,0.1);
+    color: var(--emerald);
+}
+
+/* TABLE */
+.container {
+    padding: 20px;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--glass);
+    backdrop-filter: blur(25px);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+}
+
+th {
+    background: rgba(0,208,132,0.15);
+    color: var(--emerald);
+    font-weight: 600;
+}
+
+th, td {
+    padding: 14px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+}
+
+tr {
+    transition: 0.3s;
+}
+
+tr:hover {
+    background: rgba(0,208,132,0.05);
+    transform: scale(1.01);
+}
+
+/* ACTION BUTTONS */
+.btn {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    text-decoration: none;
+    margin: 2px;
+    display: inline-block;
+    transition: 0.3s;
+}
+
+/* Approve */
+.approve {
+    background: rgba(0,208,132,0.15);
+    color: var(--emerald);
+}
+
+.approve:hover {
+    background: var(--emerald);
+    color: black;
+    box-shadow: 0 0 10px rgba(0,208,132,0.5);
+}
+
+/* Reject */
+.reject {
+    background: rgba(255,0,0,0.15);
+    color: red;
+}
+
+.reject:hover {
+    background: red;
+    color: white;
+    box-shadow: 0 0 10px rgba(255,0,0,0.5);
+}
+
+/* STATUS BADGE */
+.status {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    background: rgba(255,255,255,0.05);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        gap: 10px;
+        border-radius: 20px;
+    }
+
+    th, td {
+        padding: 10px;
+        font-size: 13px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+
+    <h2>🏦 Loan Officer Dashboard</h2>
+
+    <div>
+        <a class="add" href="{% url 'add_loan' %}">+ Add Loan</a>
+        <a href="{% url 'change_password' %}">Change Password</a>
+        <a class="logout" href="{% url 'logout' %}">Logout</a>
+    </div>
+
+</div>
+
+<!-- TABLE -->
+<div class="container">
+<div class="table-container">
+
+<table>
+
+<tr>
+    <th>User</th>
+    <th>Amount</th>
+    <th>Loan Type</th>
+    <th>Status</th>
+    <th>Action</th>
+</tr>
+
+{% for loan in loans %}
+<tr>
+    <td>{{ loan.username }}</td>
+    <td>₹ {{ loan.amount }}</td>
+    <td>{{ loan.loan_type }}</td>
+
+    <td>
+        <span class="status">{{ loan.status }}</span>
+    </td>
+
+    <td>
+        <a class="btn approve" href="{% url 'loan_action' loan.id 'approve' %}">
+            Approve
+        </a>
+
+        <a class="btn reject" href="{% url 'loan_action' loan.id 'reject' %}">
+            Reject
+        </a>
+
+        <a class="btn approve" href="{% url 'loan_officer_approve' loan.id %}">
+            Send to Branch
+        </a>
+    </td>
+</tr>
+{% endfor %}
+
+</table>
+
+</div>
+</div>
+
+</body>
+</html>

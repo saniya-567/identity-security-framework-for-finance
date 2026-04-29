@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Audit Logs</title>
+
+    {% load tz %}
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --emerald: #00d084;
+            --midnight: #040404;
+            --glass: rgba(25,25,25,0.6);
+            --border: rgba(255,255,255,0.08);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            margin: 0;
+            padding: 30px;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(0,208,132,0.08), transparent 40%),
+                var(--midnight);
+            color: #fff;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            letter-spacing: 0.5px;
+        }
+
+        /* TABLE WRAPPER */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--glass);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+        }
+
+        th {
+            background: rgba(0,208,132,0.15);
+            color: var(--emerald);
+            font-weight: 600;
+        }
+
+        th, td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr {
+            transition: 0.3s;
+        }
+
+        tr:hover {
+            background: rgba(0,208,132,0.05);
+            transform: scale(1.01);
+        }
+
+        /* ACTION TAG */
+        .action {
+            background: rgba(0,208,132,0.15);
+            color: var(--emerald);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* EMPTY STATE */
+        .empty {
+            text-align: center;
+            color: #aaa;
+            padding: 20px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
+            th, td {
+                padding: 10px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>📜 Audit Logs (Admin Only)</h2>
+
+<div class="table-container">
+<table>
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Action</th>
+            <th>Time</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for log in logs %}
+        <tr>
+            <td>{{ log.user }}</td>
+
+            <td>
+                <span class="action">{{ log.action }}</span>
+            </td>
+
+            <!-- LOCAL TIME -->
+            <td>{{ log.created_at|localtime|date:"d M Y, h:i A" }}</td>
+        </tr>
+
+        {% empty %}
+        <tr>
+            <td colspan="3" class="empty">
+                No audit logs found
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+
+</body>
+</html>

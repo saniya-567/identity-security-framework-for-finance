@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Permissions</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --emerald: #00d084;
+            --midnight: #040404;
+            --glass: rgba(25,25,25,0.6);
+            --border: rgba(255,255,255,0.08);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            margin: 0;
+            padding: 30px;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(0,208,132,0.08), transparent 40%),
+                var(--midnight);
+            color: #fff;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            letter-spacing: 0.5px;
+        }
+
+        /* TABLE WRAPPER */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--glass);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+        }
+
+        th {
+            background: rgba(0,208,132,0.15);
+            color: var(--emerald);
+            font-weight: 600;
+        }
+
+        th, td {
+            padding: 14px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr {
+            transition: 0.3s;
+        }
+
+        tr:hover {
+            background: rgba(0,208,132,0.05);
+            transform: scale(1.01);
+        }
+
+        /* STATUS */
+        .locked {
+            color: #ff4d4d;
+            font-weight: 600;
+        }
+
+        .safe {
+            color: #4ade80;
+            font-weight: 600;
+        }
+
+        /* BUTTONS */
+        button {
+            padding: 6px 12px;
+            border: none;
+            cursor: pointer;
+            border-radius: 100px;
+            margin: 2px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .lock {
+            background: rgba(255,165,0,0.2);
+            color: orange;
+        }
+
+        .lock:hover:not(:disabled) {
+            background: orange;
+            color: black;
+            box-shadow: 0 0 10px orange;
+        }
+
+        .unlock {
+            background: rgba(0,255,255,0.2);
+            color: cyan;
+        }
+
+        .unlock:hover:not(:disabled) {
+            background: cyan;
+            color: black;
+            box-shadow: 0 0 10px cyan;
+        }
+
+        button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* ROLE BADGE */
+        .role {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            background: rgba(255,255,255,0.05);
+        }
+
+        /* EMPTY STATE */
+        .empty {
+            padding: 20px;
+            color: #aaa;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
+            th, td {
+                padding: 10px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<h2> Access Control Management</h2>
+
+<div class="table-container">
+<table>
+    <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Status</th>
+        <th>Last Login</th>
+        <th>Action</th>
+    </tr>
+
+    {% for user in users %}
+    <tr>
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+
+        <!-- ROLE -->
+        <td>
+            <span class="role">{{ user.role }}</span>
+        </td>
+
+        <!-- STATUS -->
+        <td>
+            {% if user.is_locked %}
+                <span class="locked">🔒 Blocked</span>
+            {% else %}
+                <span class="safe">✅ Active</span>
+            {% endif %}
+        </td>
+
+        <!-- LAST LOGIN -->
+        <td>
+            {% if user.last_login %}
+                {{ user.last_login|date:"d M Y, h:i A" }}
+            {% else %}
+                Never
+            {% endif %}
+        </td>
+
+        <!-- ACTION -->
+        <td>
+            {% if not user.is_superuser %}
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="user_id" value="{{ user.id }}">
+
+                <button class="lock" name="action" value="lock"
+                    {% if user.is_locked %}disabled{% endif %}>
+                    🔒 Block
+                </button>
+
+                <button class="unlock" name="action" value="unlock"
+                    {% if not user.is_locked %}disabled{% endif %}>
+                    🔓 Unblock
+                </button>
+            </form>
+            {% else %}
+                <span class="safe">Admin</span>
+            {% endif %}
+        </td>
+    </tr>
+
+    {% empty %}
+    <tr>
+        <td colspan="6" class="empty">No users found</td>
+    </tr>
+    {% endfor %}
+</table>
+</div>
+
+</body>
+</html>

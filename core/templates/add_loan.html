@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Add Loan</title>
+
+<style>
+body {
+    font-family: Arial;
+    background: #0f172a;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* CARD */
+.box {
+    background: #1f2937;
+    padding: 30px;
+    border-radius: 12px;
+    width: 320px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+}
+
+/* TITLE */
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #38bdf8;
+}
+
+/* INPUTS */
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+    background: #111827;
+    color: white;
+}
+
+/* PLACEHOLDER */
+input::placeholder {
+    color: #9ca3af;
+}
+
+/* BUTTON */
+button {
+    width: 100%;
+    padding: 10px;
+    background: #38bdf8;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 10px;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #0ea5e9;
+}
+
+/* OPTIONAL MESSAGE */
+.msg {
+    text-align: center;
+    color: yellow;
+    font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+
+    <h2>🏦 Add Loan</h2>
+
+    <!-- Django Messages -->
+    {% for message in messages %}
+        <p class="msg">{{ message }}</p>
+    {% endfor %}
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <input type="text" name="username" placeholder="Username" required>
+
+        <input type="number" name="amount" placeholder="Loan Amount" required>
+
+        <select name="loan_type" required>
+            <option value="">Select Loan Type</option>
+            <option>Personal Loan</option>
+            <option>Gold Loan</option>
+            <option>Home Loan</option>
+        </select>
+
+        <button type="submit">Submit Loan</button>
+    </form>
+
+</div>
+
+</body>
+</html>

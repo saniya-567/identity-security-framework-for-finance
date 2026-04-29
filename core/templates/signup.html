@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign Up</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --emerald: #00d084;
+            --midnight: #040404;
+            --glass: rgba(25,25,25,0.6);
+            --border: rgba(255,255,255,0.08);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(0,208,132,0.08), transparent 40%),
+                var(--midnight);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+        }
+
+        /* CONTAINER */
+        .container {
+            background: var(--glass);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--border);
+            padding: 35px 30px;
+            border-radius: 25px;
+            width: 320px;
+            text-align: center;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+            transition: 0.4s;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 35px 80px rgba(0,0,0,0.7);
+        }
+
+        h2 {
+            color: var(--emerald);
+            margin-bottom: 20px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        /* INPUTS */
+        input {
+            width: 90%;
+            padding: 11px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            background: rgba(255,255,255,0.05);
+            color: white;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input::placeholder {
+            color: #aaa;
+        }
+
+        input:focus {
+            border-color: var(--emerald);
+            box-shadow: 0 0 12px rgba(0,208,132,0.3);
+        }
+
+        /* BUTTON */
+        button {
+            width: 95%;
+            padding: 11px;
+            background: var(--emerald);
+            border: none;
+            border-radius: 100px;
+            color: black;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0,208,132,0.4);
+        }
+
+        /* LOGIN LINK */
+        .link-btn {
+            margin-top: 15px;
+            display: inline-block;
+            padding: 10px;
+            border: 1px solid var(--emerald);
+            border-radius: 100px;
+            color: var(--emerald);
+            text-decoration: none;
+            width: 90%;
+            transition: 0.3s;
+        }
+
+        .link-btn:hover {
+            background: var(--emerald);
+            color: black;
+            box-shadow: 0 0 15px rgba(0,208,132,0.4);
+        }
+
+        /* ERROR */
+        p {
+            color: #ff4d4d;
+            font-size: 13px;
+            margin: 5px 0;
+        }
+
+        /* MOBILE */
+        @media (max-width: 480px) {
+            .container {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Create Account</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Password" required>
+
+        <button type="submit">Register</button>
+    </form>
+
+    <a href="{% url 'login' %}" class="link-btn">Already have an account? Login</a>
+</div>
+
+</body>
+</html>

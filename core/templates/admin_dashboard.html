@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Admin Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --emerald: #00d084;
+    --midnight: #040404;
+    --glass: rgba(25, 25, 25, 0.55);
+    --border: rgba(255,255,255,0.08);
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background:
+        radial-gradient(circle at 10% 20%, rgba(0,208,132,0.08), transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(0,208,132,0.05), transparent 40%),
+        var(--midnight);
+    color: #fff;
+}
+
+/* Ambient */
+.ambient-glow {
+    position: fixed;
+    width: 70vw;
+    height: 70vw;
+    background: radial-gradient(circle, rgba(0,208,132,0.08), transparent 70%);
+    top: -30%;
+    left: -20%;
+    filter: blur(140px);
+    z-index: -1;
+}
+
+/* Sidebar */
+#sidebar {
+    width: 240px;
+    background: rgba(10,10,10,0.7);
+    backdrop-filter: blur(30px);
+    border-right: 1px solid var(--border);
+    position: fixed;
+    height: 100%;
+}
+
+/* animated border */
+#sidebar::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(transparent, var(--emerald), transparent);
+    animation: glowLine 3s infinite linear;
+}
+
+@keyframes glowLine {
+    0% {opacity: 0.2;}
+    50% {opacity: 1;}
+    100% {opacity: 0.2;}
+}
+
+#sidebar h2 {
+    padding: 22px;
+    font-size: 18px;
+    border-bottom: 1px solid var(--border);
+}
+
+/* Sidebar Links */
+#sidebar ul {
+    list-style: none;
+    margin-top: 10px;
+}
+
+#sidebar li a {
+    display: block;
+    padding: 12px 20px;
+    margin: 6px 10px;
+    border-radius: 12px;
+    color: #aaa;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+/* Active link auto */
+#sidebar li a.active {
+    background: rgba(0,208,132,0.1);
+    color: var(--emerald);
+}
+
+/* Glow line */
+#sidebar li a::before {
+    content: "";
+    position: absolute;
+    left: -6px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 0%;
+    background: var(--emerald);
+    transition: 0.3s;
+}
+
+#sidebar li a:hover::before,
+#sidebar li a.active::before {
+    height: 70%;
+}
+
+#sidebar li a:hover {
+    color: var(--emerald);
+    transform: translateX(6px);
+}
+
+/* Content */
+#content {
+    margin-left: 260px;
+    padding: 35px;
+}
+
+/* Topbar */
+.topbar {
+    position: relative;
+    padding: 20px 25px;
+    border-radius: 22px;
+    background: var(--glass);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(25px);
+    overflow: hidden;
+}
+
+/* animated gradient border */
+.topbar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 22px;
+    padding: 1px;
+    background: linear-gradient(120deg, transparent, var(--emerald), transparent);
+    -webkitmask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: borderMove 6s linear infinite;
+}
+
+@keyframes borderMove {
+    0% {opacity: 0.3;}
+    50% {opacity: 1;}
+    100% {opacity: 0.3;}
+}
+
+/* Grid */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 25px;
+}
+
+/* Card */
+.card {
+    position: relative;
+    padding: 28px;
+    border-radius: 30px;
+    background: var(--glass);
+    backdrop-filter: blur(30px);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: all 0.4s ease;
+}
+
+/* gradient border animation */
+.card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 30px;
+    padding: 1px;
+    background: linear-gradient(130deg, transparent, var(--emerald), transparent);
+    -webkitmask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: 0.4s;
+}
+
+.card:hover::before {
+    opacity: 1;
+}
+
+/* lighting */
+.card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top left, rgba(0,208,132,0.15), transparent 60%);
+    opacity: 0;
+    transition: 0.4s;
+}
+
+.card:hover::after {
+    opacity: 1;
+}
+
+.card:hover {
+    transform: translateY(-14px) scale(1.04);
+    box-shadow: 0 35px 80px rgba(0,0,0,0.8);
+}
+
+/* Text */
+.card h3 {
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.card p {
+    color: #9ca3af;
+    font-size: 14px;
+}
+
+/* Links */
+.card-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+    #sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+    }
+    #content {
+        margin-left: 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="ambient-glow"></div>
+
+<div id="sidebar">
+    <h2>Admin Panel</h2>
+    <ul>
+        <li><a href="{% url 'admin_dashboard' %}" class="active">Dashboard</a></li>
+        <li><a href="{% url 'manage_employees' %}">Manage Employees</a></li>
+        <li><a href="{% url 'admin_permissions' %}">Permissions</a></li>
+        <li><a href="{% url 'security_admin' %}">Security Alerts</a></li>
+        <li><a href="{% url 'audit_logs' %}">Audit Logs</a></li>
+        <li><a href="{% url 'logout' %}">Logout</a></li>
+    </ul>
+</div>
+
+<div id="content">
+
+    <div class="topbar">
+        <h2>Admin Dashboard</h2>
+    </div>
+
+    <div class="dashboard-grid">
+
+        <a href="{% url 'manage_employees' %}" class="card-link">
+            <div class="card">
+                <h3>Manage Employees</h3>
+                <p>Create, edit, or remove employee accounts.</p>
+            </div>
+        </a>
+
+        <a href="{% url 'admin_permissions' %}" class="card-link">
+            <div class="card">
+                <h3>Assign Permissions</h3>
+                <p>Grant or restrict access</p>
+            </div>
+        </a>
+
+        <a href="{% url 'security_admin' %}" class="card-link">
+            <div class="card">
+                <h3>Security Alerts</h3>
+                <p>Monitor suspicious activities and warnings.</p>
+            </div>
+        </a>
+
+        <a href="{% url 'audit_logs' %}" class="card-link">
+            <div class="card">
+                <h3>Audit Logs</h3>
+                <p>Track system activity and admin actions.</p>
+            </div>
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

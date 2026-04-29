@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Create Loan</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --emerald: #00d084;
+    --midnight: #040404;
+    --glass: rgba(25,25,25,0.6);
+    --border: rgba(255,255,255,0.08);
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(0,208,132,0.08), transparent 40%),
+        var(--midnight);
+    color: #fff;
+}
+
+/* BOX */
+.box {
+    background: var(--glass);
+    backdrop-filter: blur(30px);
+    border: 1px solid var(--border);
+    padding: 35px 30px;
+    border-radius: 25px;
+    width: 320px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+    transition: 0.3s;
+}
+
+.box:hover {
+    transform: translateY(-6px);
+}
+
+/* TITLE */
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* INPUTS */
+input, select {
+    width: 100%;
+    padding: 11px;
+    margin: 10px 0;
+    border-radius: 12px;
+    border: 1px solid transparent;
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+    outline: none;
+    transition: 0.3s;
+}
+
+input:focus, select:focus {
+    border-color: var(--emerald);
+    box-shadow: 0 0 12px rgba(0,208,132,0.3);
+}
+
+/* HOVER */
+select:hover {
+    border-color: var(--emerald);
+    background: rgba(0,208,132,0.08);
+}
+
+/* OPTIONS */
+select option {
+    background: #0a0a0a;
+    color: #fff;
+}
+
+/* BUTTON */
+button {
+    width: 100%;
+    padding: 11px;
+    margin-top: 10px;
+    background: var(--emerald);
+    color: black;
+    border: none;
+    border-radius: 100px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(0,208,132,0.5);
+}
+
+/* RESPONSIVE */
+@media (max-width: 480px) {
+    .box {
+        width: 90%;
+        padding: 25px 20px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+
+<h2>🧾 Create Loan</h2>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <input type="text" name="username" placeholder="Username" required>
+    <input type="number" name="amount" placeholder="Amount" required>
+
+    <select name="loan_type" required>
+        <option value="">Select Loan Type</option>
+        <option>Personal Loan</option>
+        <option>Gold Loan</option>
+        <option>Home Loan</option>
+    </select>
+
+    <button type="submit">Create Loan</button>
+</form>
+
+</div>
+
+</body>
+</html>
